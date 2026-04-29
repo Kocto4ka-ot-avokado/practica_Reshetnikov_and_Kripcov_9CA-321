@@ -1,0 +1,97 @@
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname R1
+!
+!
+!
+!
+!
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+!
+license udi pid CISCO2811/K9 sn FTX10173D5Q-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip ftp username cisco
+ip ftp password cisco
+ip domain-name msk.local
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ ip address 10.0.0.2 255.0.0.0
+ ip access-group 120 in
+ duplex auto
+ speed auto
+ standby 1 ip 10.0.0.1
+ standby 1 preempt
+ standby 1 track FastEthernet0/1
+!
+interface FastEthernet0/1
+ ip address 11.0.0.2 255.0.0.0
+ ip access-group 120 in
+ duplex auto
+ speed auto
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router eigrp 100
+ network 10.0.0.0
+ network 11.0.0.0
+!
+ip classless
+!
+ip flow-export version 9
+!
+!
+access-list 120 permit icmp any any echo-reply
+access-list 120 deny icmp any any echo
+access-list 120 permit ip any any
+!
+banner motd # Raboru vypolonili Reshetnikov and Kripcov studenty group 9CA-321, v zhurnale pod nomerami 15,21 #
+!
+!
+!
+snmp-server community cisco RW
+!
+logging 10.0.0.100
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+ntp authentication-key 1 md5 0822455D0A16 7
+ntp authenticate
+ntp trusted-key 1
+ntp server 10.0.0.100 key 1
+!
+end
+
